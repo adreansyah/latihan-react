@@ -1,10 +1,14 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import heroBanner from '../assets/images/img_car.png'
+import Button from "../component/Button";
+import SideBar from "../component/Sidebar";
 const Header = (props) => {
-    const navigate = useNavigate()
-    const location = useLocation()
-    console.log(location);
+    const navigate = useNavigate();
+    const [open, setopen] = useState(false);
+    const openSideBar = () => {
+        setopen(!open)
+    }
     return (
         <header id="header-doc" className="container-fluid bg-gray">
             <div className="row">
@@ -18,10 +22,12 @@ const Header = (props) => {
                             <li>FAQ</li>
                         </ol>
                     </nav>
-                    <button id="click-btn" className="btn d-lg-none d-xl-none "><i className="fa fa-bars"></i></button>
+                    <button
+                        onClick={openSideBar}
+                        id="click-btn" className="btn d-lg-none d-xl-none "><i className="fa fa-bars"></i></button>
                 </div>
             </div>
-            {location.pathname === "/" && <div className="row mt-4">
+            <div className="row mt-4">
                 <div className="col-md-6 p-0 justify-content-between contains">
                     <div id="text-mobil" className="margin-col-slide">
                         <h1 className="title-h1">Sewa & Rental Mobil Terbaik di kawasan (Lokasimu)</h1>
@@ -30,9 +36,14 @@ const Header = (props) => {
                             terjangkau.
                             Selalu siap melayani kebutuhanmu untuk sewa mobil selama 24 jam.
                         </p>
-                        <button
+
+                        {/* <div className="test" id="div" about="title" ariaColindex="col" /> */}
+                        <Button
+                            type="button"
                             onClick={() => navigate('/cari-mobil')}
-                            className="btn btn-success">Mulai Sewa Mobil</button>
+                            className="btn btn-success"  >
+                            Mulai Sewa Mobil
+                        </Button>
                     </div>
                 </div>
                 <div className="col-md-6 p-0">
@@ -42,7 +53,8 @@ const Header = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>}
+            </div>
+            <SideBar open={open} close={openSideBar} />
         </header>
     )
 }

@@ -2,7 +2,7 @@ import { useRoutes } from "react-router-dom"
 import Home from "../pages/home"
 import SearchCar from "../pages/search-car.js"
 
-const publicRoutes = (props) => {
+const routing = (props) => {
     return [
         { index: true, path: '/', element: <Home  {...props} title="Home" />, },
         { index: true, path: '/cari-mobil', element: <SearchCar  {...props} title="Cari Mobil" />, },
@@ -11,7 +11,7 @@ const publicRoutes = (props) => {
 }
 
 const PublicRoutes = (props) => {
-    const routes = useRoutes(publicRoutes(props))
+    const routes = useRoutes(routing(props))
     return routes
 }
 
