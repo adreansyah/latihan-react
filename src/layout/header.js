@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import heroBanner from '../assets/images/img_car.png'
 import Button from "../component/Button";
 import SideBar from "../component/Sidebar";
@@ -9,6 +9,8 @@ const Header = (props) => {
     const openSideBar = () => {
         setopen(!open)
     }
+    const params = useLocation()
+    // console.log(params.pathname.split('/').filter(i => i !== "")[1]);
     return (
         <header id="header-doc" className="container-fluid bg-gray">
             <div className="row">
@@ -27,7 +29,7 @@ const Header = (props) => {
                         id="click-btn" className="btn d-lg-none d-xl-none "><i className="fa fa-bars"></i></button>
                 </div>
             </div>
-            <div className="row mt-4">
+            {!params.pathname.split('/').filter(i => i !== "")[1] && <div className="row mt-4">
                 <div className="col-md-6 p-0 justify-content-between contains">
                     <div id="text-mobil" className="margin-col-slide">
                         <h1 className="title-h1">Sewa & Rental Mobil Terbaik di kawasan (Lokasimu)</h1>
@@ -36,8 +38,6 @@ const Header = (props) => {
                             terjangkau.
                             Selalu siap melayani kebutuhanmu untuk sewa mobil selama 24 jam.
                         </p>
-
-                        {/* <div className="test" id="div" about="title" ariaColindex="col" /> */}
                         <Button
                             type="button"
                             onClick={() => navigate('/cari-mobil')}
@@ -53,7 +53,7 @@ const Header = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
             <SideBar open={open} close={openSideBar} />
         </header>
     )
