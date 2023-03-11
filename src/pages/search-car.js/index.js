@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import Button from '../../component/Button';
@@ -7,7 +7,7 @@ import Input from '../../component/Input';
 import LoaderSvg from '../../component/Loader';
 import Segment from '../../component/segment';
 import SelectBox from '../../component/Selectbox';
-import { fetchApi } from '../../config/services';
+import useFetchingHooks from '../../hooks/useFetching';
 
 const categoryData = [{
     value: "small",
@@ -46,9 +46,18 @@ const SearchCar = (props) => {
         status: ""
     })
     const navigate = useNavigate()
-    const [data, setData] = useState([])
     const [backDrop, setBackDrop] = useState(false)
-    const [loader, setloader] = useState("idle")
+
+    const { data, error, loading, setParams } = useFetchingHooks({
+        url: "https://bootcamp-rent-cars.herokuapp.com/customer/v2/car",
+        parameter: {
+            carName: "",
+            kapasitas: "",
+            harga: "",
+            status: ""
+        }
+    })
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setValue(prev => ({
@@ -63,19 +72,9 @@ const SearchCar = (props) => {
         }
     })
 
-    const fetchingMobil = useCallback((params = null) => {
-        setloader('fetching')
-        fetchApi('https://bootcamp-rent-cars.herokuapp.com/customer/v2/car', params).then(result => {
-            setData(result.data.cars)
-            setloader('resolve')
-        }).catch(e => {
-            setloader('reject')
-        })
-    }, [])
-
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetchingMobil({
+        setParams({
             name: value.carName,
             catgory: value.kapasitas,
             isRented: value.status,
@@ -84,13 +83,7 @@ const SearchCar = (props) => {
         })
         setBackDrop(false)
     }
-
-    useEffect(() => {
-        fetchingMobil()
-    }, [fetchingMobil])
-
     const formatNumber = (number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
-    // console.log(loader);
     return (
         <>
             <Segment className='contains-box position-absolute w-100' style={{ marginTop: "-4rem" }}>
@@ -135,10 +128,11 @@ const SearchCar = (props) => {
                 </Form>
             </Segment>
             <Segment className="contains-box contains-car">
-                {loader !== "resolve" && <Segment className="text-center w-100"><LoaderSvg /></Segment>}
-                {loader === "resolve" && <Row>
+                {loading === "fetching" && <Segment className="text-center w-100"><LoaderSvg /></Segment>}
+                {loading === "reject" && <Segment className="text-center w-100">{error}</Segment>}
+                {<Row>
                     {
-                        data.map((item, index) => {
+                        loading === "resolve" && data?.data?.cars?.map((item, index) => {
                             return (
                                 <Col key={index} md={4} className="pb-4">
                                     <Segment className="card card-size d-flex flex-column gap-3">
@@ -151,7 +145,10 @@ const SearchCar = (props) => {
                                             <p className='card-car-description'>
                                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                             </p>
-                                            <Button onClick={() => navigate(`/cari-mobil/${item.id}`)} type="button" className="btn btn-success w-100">Pilih Mobil</Button>
+                                            <Button
+                                                onClick={() => navigate(`/cari-mobil/${item.id}`)}
+                                                type="button"
+                                                className="btn btn-success w-100">Pilih Mobil</Button>
                                         </Segment>
                                     </Segment>
                                 </Col>

@@ -10,6 +10,7 @@ import star from '../../assets/images/Star 1.png'
 const Home = (props) => {
     return (
         <>
+            <button type="button">HELLO</button>
             <section className="container-fluid contains">
                 <div className="row d-flex align-items-center mt-5 pt-4">
                     <div className="col-md-6 text-center mb-5">
