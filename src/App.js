@@ -4,7 +4,9 @@ import Layout from './layout';
 
 const App = (props) => {
   return (
-    <Layout />
+    <>
+      <Layout />
+    </>
   );
 }
 

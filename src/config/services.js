@@ -9,3 +9,9 @@ export const fetchApi = (url, params) => {
         }
     });
 }
+
+export const postApi = (url, params) => {
+    return axios.post(url, {
+        ...params
+    });
+}

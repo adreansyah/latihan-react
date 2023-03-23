@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { fetchApi } from "../config/services"
+import { fetchApi, postApi } from "../config/services"
 
 const useFetchingHooks = ({
     url,
@@ -20,12 +20,24 @@ const useFetchingHooks = ({
         })
     }, [params, url])
 
+    const mutation = (url, params) => {
+        setloading("fetching")
+        postApi(url, params).then(result => {
+            setData(result)
+            setloading("resolve")
+        }).catch(e => {
+            setError(e.message)
+            setloading("reject")
+        })
+    }
+
     return {
         data,
         setParams,
         params,
         error,
-        loading
+        loading,
+        mutation
     }
 }
 

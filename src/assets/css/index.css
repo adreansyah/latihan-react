@@ -239,3 +239,8 @@ aside {
   line-height: 20px;
   color: #000000;
 }
+
+.login-content {
+  border: 1px solid black;
+  border-radius: 10px;
+}
