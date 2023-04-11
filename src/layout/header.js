@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import heroBanner from '../assets/images/img_car.png'
 import Button from "../component/Button";
 import SideBar from "../component/Sidebar";
+import { token } from "../config/token";
 const Header = (props) => {
     const navigate = useNavigate();
     const [open, setopen] = useState(false);
@@ -10,7 +11,6 @@ const Header = (props) => {
         setopen(!open)
     }
     const params = useLocation()
-    // console.log(params.pathname.split('/').filter(i => i !== "")[1]);
     return (
         <header id="header-doc" className="container-fluid bg-gray">
             <div className="row">
@@ -22,6 +22,22 @@ const Header = (props) => {
                             <li>Why Us</li>
                             <li>Testimonial</li>
                             <li>FAQ</li>
+                            <li>
+                                {!token ? <Button
+                                    type="button"
+                                    onClick={() => navigate('/sign-in')}
+                                    className="btn btn-sm btn-success"  >
+                                    Register
+                                </Button> : <Button
+                                    type="button"
+                                    onClick={() => {
+                                        localStorage.removeItem("ACCESS_TOKEN")
+                                        window.location.reload()
+                                    }}
+                                    className="btn btn-sm btn-success"  >
+                                    Logout
+                                </Button>}
+                            </li>
                         </ol>
                     </nav>
                     <button

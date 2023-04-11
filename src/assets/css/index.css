@@ -244,3 +244,24 @@ aside {
   border: 1px solid black;
   border-radius: 10px;
 }
+
+.font-title-cms {
+  font-family: "Arial";
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 36px;
+  color: #000000;
+}
+
+.logo-login-cms {
+  width: 100px;
+  height: 34px;
+  background: grey;
+}
+
+.sign-up-font {
+  font-family: "Arial";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+}

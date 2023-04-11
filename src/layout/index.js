@@ -15,7 +15,7 @@ const InlineRoutes = (props) => {
     return (
         <>
             <Header />
-                <PublicRoutes />
+            <PublicRoutes />
             <Footer />
         </>
     )
@@ -25,7 +25,7 @@ const Layout = (props) => {
     const { pathname } = useLocation()
     return (
         <>
-            {pathname !== '/login' ? <InlineRoutes {...props} /> : <LoginRoutes {...props} />}
+            {pathname !== '/sign-in' && pathname !== "/registrasi" ? <InlineRoutes {...props} /> : <LoginRoutes {...props} />}
         </>
     )
 }

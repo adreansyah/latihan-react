@@ -1,5 +1,6 @@
 const initialState = {
-    users: []
+    users: [],
+    message: ""
 }
 
 const users = (state = initialState, action) => {
@@ -8,6 +9,11 @@ const users = (state = initialState, action) => {
             return {
                 ...state,
                 users: action.payload
+            }
+        case "USER_SUCCESS_CREATED":
+            return {
+                ...state,
+                message: action.payload.message
             }
         default:
             return {

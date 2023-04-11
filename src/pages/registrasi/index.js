@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Col, Input, Label, Row } from 'reactstrap';
 import Form from '../../component/Form';
 import { Services } from '../../config/services';
 import { token } from '../../config/token';
 
-const Login = () => {
+const Register = () => {
     const [state, setState] = useState({
+        name: "",
         email: "",
         password: ""
     })
@@ -17,14 +18,14 @@ const Login = () => {
             [name]: value
         }))
     }
+    const navigate = useNavigate()
     const handleSubmit = (_) => {
         _.preventDefault()
-        Services().post('https://bootcamp-rent-cars.herokuapp.com/customer/auth/login', {
-            ...state
+        Services().post('https://bootcamp-rent-cars.herokuapp.com/customer/auth/register', {
+            ...state,
+            "role": "Admin"
         }).then(response => {
-            const { data } = response
-            localStorage.setItem("ACCESS_TOKEN", data.access_token)
-            window.location.replace('/')
+            navigate('/sign-in')
         }).catch(err => err.message)
     }
     if (token) return <Navigate to="/home" />
@@ -35,20 +36,24 @@ const Login = () => {
                     <div className='logo-login-cms'></div>
                 </div>
                 <div>
-                    <h2 className='font-title-cms'>Welcome Back</h2>
+                    <h2 className='font-title-cms'>Sign Up</h2>
                 </div>
                 <Row>
                     <Col md={12} className="pb-2">
-                        <Label>Email</Label>
-                        <Input onChange={handleChange} name="email" label={"Email"} required placeholder="Masukan Email" className="form-control" />
+                        <Label>Name<span className='text-danger'>*</span></Label>
+                        <Input onChange={handleChange} name="name" required placeholder="Masukan Nama" className="form-control" />
                     </Col>
                     <Col md={12} className="pb-2">
-                        <Label>Password</Label>
-                        <Input onChange={handleChange} name="password" label={"Password"} required type="password" placeholder="Masukan Password" className="form-control" />
+                        <Label>Email<span className='text-danger'>*</span></Label>
+                        <Input onChange={handleChange} name="email" required placeholder="Masukan Email" className="form-control" />
+                    </Col>
+                    <Col md={12} className="pb-2">
+                        <Label>Create Password<span className='text-danger'>*</span></Label>
+                        <Input onChange={handleChange} name="password" required type="password" placeholder="Masukan Password" className="form-control" />
                     </Col>
                     <Col md={12} className="pt-2 d-flex flex-column gap-4 text-center">
                         <Button type='submit' className='w-100' style={{ backgroundColor: "#0D28A6" }}>Sign In</Button>
-                        <span className='sign-up-font'>Don't have an account? <Link to="/registrasi">Sign Up for free</Link></span>
+                        <span className='sign-up-font'>Already have an account? <Link to="/sign-in">Sign In here</Link></span>
                     </Col>
                 </Row>
             </Form>
@@ -56,4 +61,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register
